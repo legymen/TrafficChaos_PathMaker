@@ -1,40 +1,45 @@
 boolean debug = true;
 boolean mpressed = false;
-PrintWriter output;
-int check;
+PrintWriter output1, output2;
 
 String state = "RECORD_PATH1";
+String[] carPathPos;
+String[] carPathCoords;
 
 Path path1, path2;
 
+PImage bg;
+
 void setup() {
 
-  size(1600, 1200);
+  size(1400, 997);
 
   path1 = new Path();
   path2 = new Path();
 
-  output = createWriter("positions.txt");
+  output1 = createWriter("carPathPos_temp.txt");
+  output2 = createWriter("walkerPathPos_temp.txt");
+
+  bg = loadImage("images/bakgrundv2.jpg");
+  carPathPos = loadStrings("carPathPos.txt");
+  String entirePlay = join(carPathPos, ",");
+  carPathCoords = split(entirePlay, ",");
 }
 
 void draw() {
-  background(140);
+  background(bg);
 
   switch(state) {
 
     //*********RECORD_PATH1**********
     case("RECORD_PATH1"):
-    check = 0;
+    println(mpressed);
 
-    if (check == 0) {
-      output.println("Path1: "); // Write the coordinate to the file
-      check = 1;
-    }
     if (mousePressed && !mpressed) {
       path1.addPoint(mouseX, mouseY);
-      output.println(mouseX + "\t" + mouseY);
+      output1.println(mouseX + " " + mouseY + ",");
       mpressed = true;
-    } else {
+    } else if (mpressed && !mousePressed) {
       mpressed = false;
     }
     if (keyPressed && key == '1') {
@@ -47,8 +52,9 @@ void draw() {
     case("MAKE_PATH2"):
     if (mousePressed && !mpressed) {
       path2.addPoint(mouseX, mouseY);
+      output2.println(mouseX + " " + mouseY + ",");
       mpressed = true;
-    } else {
+    } else if (mpressed && !mousePressed) {
       mpressed = false;
     }
     if (keyPressed && key == '2') {
@@ -60,14 +66,22 @@ void draw() {
 
     //*********RUN**********
     case("RUN"):
-    path1.render();
-    path2.render();
+    for (int i = 0; i < carPathCoords.length; i++) {
+      println(carPathCoords[i]);
+    }
     break;
   }
 }
 
+
 public void keyPressed() {
   if (key == ' ') {
     debug = !debug;
+  } else if (key == 's') {
+    output1.flush(); // Writes the remaining data to the file
+    output1.close(); // Finishes the file
+    output2.flush(); // Writes the remaining data to the file
+    output2.close(); // Finishes the file
+    exit(); // Stops the program
   }
 }

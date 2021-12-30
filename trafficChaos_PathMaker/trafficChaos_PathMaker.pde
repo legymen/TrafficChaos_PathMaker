@@ -2,7 +2,7 @@ boolean mClicked = false;
 
 PrintWriter outputCars, outputWalkers, outputLights;
 
-String state = "PLACE_LIGHTS";
+String state = "RECORD_CARPATH";
 
 Path carPath, walkerPath;
 

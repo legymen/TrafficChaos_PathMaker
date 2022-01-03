@@ -45,7 +45,7 @@ void draw() {
 
     if (mClicked) {
       carPath.addPoint(mouseX, mouseY);
-      outputCars.println(mouseX + " " + mouseY + ",");
+      outputCars.println(mouseX + " " + mouseY);
       mClicked = false;
     }
     if (keyPressed && key == '1') {
@@ -58,7 +58,7 @@ void draw() {
     case("MAKE_WALKERPATH"):
     if (mClicked) {
       walkerPath.addPoint(mouseX, mouseY);
-      outputWalkers.println(mouseX + " " + mouseY + ",");
+      outputWalkers.println(mouseX + " " + mouseY);
       mClicked = false;
     }
     if (keyPressed && key == '2') {
